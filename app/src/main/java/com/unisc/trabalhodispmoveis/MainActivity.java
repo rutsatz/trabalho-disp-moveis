@@ -9,12 +9,14 @@ import android.widget.TabHost;
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
 
+    static int userId = 9;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost tabHost = (TabHost)findViewById(R.id.tabHost);
+        TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
 
         TabHost.TabSpec tabPerfil = tabHost.newTabSpec("abaPerfil");
         TabHost.TabSpec tabCliente = tabHost.newTabSpec("abaCliente");
@@ -36,4 +38,10 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(tabContato);
         tabHost.addTab(tabServico);
     }
+
+
+    static int getUserId() {
+        return userId;
+    }
+
 }

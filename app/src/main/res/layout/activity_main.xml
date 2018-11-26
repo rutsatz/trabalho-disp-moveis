@@ -10,7 +10,8 @@
     tools:context=".MainActivity">
 
     <TabHost
-        android:id="@+id/tabHost"
+
+        android:id="@android:id/tabhost"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -21,12 +22,12 @@
             android:orientation="vertical">
 
             <TabWidget
-                android:id="@+id/tabs"
+                android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></TabWidget>
 
             <FrameLayout
-                android:id="@+id/tabContent"
+                android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></FrameLayout>
 
