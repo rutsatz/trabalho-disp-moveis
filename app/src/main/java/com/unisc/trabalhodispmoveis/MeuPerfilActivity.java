@@ -61,7 +61,14 @@ public class MeuPerfilActivity extends Activity {
     public void perfilSalvar(View view) {
 
         HttpTask task = new HttpTask();
-        task.execute("user-1", "lab-password");
+
+        if(tipoUsuario == "Cliente"){
+            task.execute(String.valueOf(nome.getText()), String.valueOf(userId), String.valueOf(dtNasc.getText()), String.valueOf(fone.getText()));
+        }else{
+            task.execute(String.valueOf(nome.getText()), String.valueOf(userId), String.valueOf(dtNasc.getText()), String.valueOf(fone.getText()), String.valueOf(cpf.getText()), String.valueOf(tipoServico.getText()));
+        }
+
+        task.execute(String.valueOf(nome.getText()), String.valueOf(userId), "lab-password");
         try {
             String data = task.get();
             Log.d("WS", data);
@@ -76,14 +83,30 @@ public class MeuPerfilActivity extends Activity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("http://ghelfer-001-site8.itempurl.com/crialogin.php?");
+                URL url = new URL("http://ghelfer-001-site8.itempurl.com/criaCliente.php?");
+
+                ContentValues values = new ContentValues();
+                values.put("nome", params[0]);
+                values.put("id_login", params[1]);
+                values.put("dt_nasc", params[2]);
+                values.put("telefone", params[3]);
+
+                if(tipoUsuario == "Prestador"){
+                    url = new URL("http://ghelfer-001-site8.itempurl.com/criaPrestador.php?");
+
+                    values.put("nome", params[0]);
+                    values.put("id_login", params[1]);
+                    values.put("dt_nasc", params[2]);
+                    values.put("telefone", params[3]);
+                    values.put("cpf", params[4]);
+                    values.put("tipo_servico", params[4]);
+                }
+
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setDoInput(true);
                 con.setDoOutput(true);
                 con.setRequestMethod("POST");
-                ContentValues values = new ContentValues();
-                values.put("email", params[0]);
-                values.put("senha", params[1]);
+
                 InputStream inputStream = null;
                 OutputStream out = con.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));

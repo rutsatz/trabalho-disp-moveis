@@ -11,7 +11,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".LoginActivity">
 
-    <!-- Login progress -->
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -54,7 +54,7 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
+                    android:hint="Password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
@@ -65,21 +65,22 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:onClick="gotoMain"
-                android:id="@+id/email_sign_in_button"
+                android:onClick="onClickLogin"
+                android:id="@+id/login"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
+                android:text="Login"
                 android:textStyle="bold" />
 
             <Button
-                android:onClick="gotoMain"
+                android:onClick="onClickCadastro"
+                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="teste"
+                android:text="Cadastrar"
                 android:textStyle="bold" />
 
         </LinearLayout>
