@@ -7,18 +7,9 @@
     android:orientation="vertical"
     tools:context=".MeusClientesActivity">
 
-    <TextView
+    <ListView
+        android:id="@+id/lstClientes"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Meus Clientes"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/userIdcliente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        android:layout_marginLeft="10dp"
-        android:text="id"/>
+        android:layout_height="wrap_content"></ListView>
 
 </LinearLayout>

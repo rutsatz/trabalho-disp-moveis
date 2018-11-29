@@ -7,18 +7,9 @@
     android:orientation="vertical"
     tools:context=".MeusContatosActivity">
 
-    <TextView
+    <ListView
+        android:id="@+id/lstContatos"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Meus Contatos"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/userIdcontatos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="10sp"
-        android:layout_marginLeft="10dp"
-        android:text="id"/>
+        android:layout_height="wrap_content"></ListView>
 
 </LinearLayout>
