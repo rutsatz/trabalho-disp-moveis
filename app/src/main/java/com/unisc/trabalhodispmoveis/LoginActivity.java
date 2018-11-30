@@ -1,24 +1,30 @@
 package com.unisc.trabalhodispmoveis;
 
-
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.unisc.trabalhodispmoveis.service.LoginService;
+import com.unisc.trabalhodispmoveis.util.MessageUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
+    Context context;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -34,13 +40,13 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password);
 
         // Testes
-        String userId = "123456";
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("id_login", userId);
-        startActivity(intent);
+//        String userId = "123456";
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("id_login", userId);
+//        startActivity(intent);
 //        if (1 == 1) return;
 
-
+        context = this;
     }
 
 
@@ -53,25 +59,73 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("teste", "senha: " + senha);
 
 
-
-
         if ("".equals(email)) {
-            Toast.makeText(this, "Preencha o campo de email.", Toast.LENGTH_SHORT).show();
+            MessageUtils.showAlert(context, "Preencha o campo de email.");
             return;
         }
         if ("".equals(senha)) {
-            Toast.makeText(this, "Preencha o campo de senha.", Toast.LENGTH_SHORT).show();
+            MessageUtils.showAlert(context, "Preencha o campo de senha.");
             return;
         }
+
+
+        JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("teste", "---------------- this is response : " + response);
+                try {
+                    JSONObject serverResp = new JSONObject(response.toString());
+                    Log.d("teste", "serverResp: " + serverResp);
+                    boolean hasError = !serverResp.getBoolean("success");
+                    Log.d("teste", "hasError: " + hasError);
+                    if (hasError) {
+                        MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
+                        return;
+                    } else {
+                        String userId = "";
+                        navigateMain(userId);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "1-Error: " + errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                // Pull out the first event on the public timeline
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "2-Error: " + responseString);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "Error 2");
+            }
+
+        };
+
 
         LoginService loginService = new LoginService();
-        if (loginService.doLogin(email, senha)) {
-
-
-        } else {
-            Toast.makeText(this, "Usuario ou senha errado, tente novamente.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Async
+        loginService.doLogin(email, senha, handler);
 
 
 //        String validacao = obj.getString("success");
@@ -82,6 +136,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    private void navigateMain(String userId) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("id_login", userId);
+        startActivity(intent);
+    }
 
     public void onClickCadastro(View view) {
         Intent intent = new Intent(this, CadastroActivity.class);

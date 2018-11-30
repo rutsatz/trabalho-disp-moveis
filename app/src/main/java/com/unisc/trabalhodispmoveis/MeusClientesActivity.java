@@ -14,8 +14,8 @@ public class MeusClientesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_clientes);
 
-        userIDtv = findViewById(R.id.userIdcliente);
+//        userIDtv = findViewById(R.id.userIdcliente);
 
-        userIDtv.setText(Integer.toString(MainActivity.getUserId()));
+//        userIDtv.setText(Integer.toString(MainActivity.getUserId()));
     }
 }

@@ -14,8 +14,8 @@ public class MeusContatosActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_contatos);
 
-        userIDtv = findViewById(R.id.userIdcontatos);
+//        userIDtv = findViewById(R.id.userIdcontatos);
 
-        userIDtv.setText(Integer.toString(MainActivity.getUserId()));
+//        userIDtv.setText(Integer.toString(MainActivity.getUserId()));
     }
 }

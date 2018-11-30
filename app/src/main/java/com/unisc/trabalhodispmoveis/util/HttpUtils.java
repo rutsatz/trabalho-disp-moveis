@@ -9,7 +9,7 @@ import com.loopj.android.http.RequestParams;
  */
 public class HttpUtils {
 
-    private static final String BASE_URL = "http://ghelfer-001-site8.itempurl.com/";
+    private static final String BASE_URL = AppConstant.URL_WS;
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
