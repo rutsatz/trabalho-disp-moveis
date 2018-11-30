@@ -17,7 +17,7 @@ public class servicosTab extends Activity {
 
         userIDtv = findViewById(R.id.userIdserv);
 
-        userIDtv.setText(Integer.toString(MainActivity.getUserId()));
+        //userIDtv.setText(Integer.toString(MainActivity.getUserId()));
     }
 
     public void onClickBusca(View view) {

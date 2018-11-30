@@ -1,22 +1,33 @@
 package com.unisc.trabalhodispmoveis;
 
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TabHost;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
 
-    static int userId = 9;
+    int userId;
+    boolean primeiroLogin;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost tabHost = (TabHost)findViewById(android.R.id.tabhost);
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("id_login", -1);
+        primeiroLogin = intent.getBooleanExtra("primeiroLogin", true);
+
+        Log.d("teste", "MainActivity userId " + userId);
+        Log.d("teste", "MainActivity primeiroLogin " + primeiroLogin);
+
+        TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
 
         TabHost.TabSpec tabPerfil = tabHost.newTabSpec("abaPerfil");
         TabHost.TabSpec tabCliente = tabHost.newTabSpec("abaCliente");
@@ -37,11 +48,14 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(tabCliente);
         tabHost.addTab(tabContato);
         tabHost.addTab(tabServico);
+        if (!primeiroLogin) {
+            tabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
+            tabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+            tabHost.getTabWidget().getChildAt(3).setVisibility(View.GONE);
+        }
+
+        context = this;
     }
 
-
-    static int getUserId() {
-        return userId;
-    }
 
 }

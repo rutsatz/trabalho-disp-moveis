@@ -49,7 +49,7 @@ public class MeuPerfilActivity extends Activity {
 
         userIDtv = findViewById(R.id.userIdperfil);
 
-        userId = MainActivity.getUserId();
+//        userId = MainActivity.getUserId();
 
         userIDtv.setText(Integer.toString(userId));
 
@@ -60,23 +60,25 @@ public class MeuPerfilActivity extends Activity {
 
     public void perfilSalvar(View view) {
 
-        HttpTask task = new HttpTask();
 
-        if(tipoUsuario == "Cliente"){
-            task.execute(String.valueOf(nome.getText()), String.valueOf(userId), String.valueOf(dtNasc.getText()), String.valueOf(fone.getText()));
-        }else{
-            task.execute(String.valueOf(nome.getText()), String.valueOf(userId), String.valueOf(dtNasc.getText()), String.valueOf(fone.getText()), String.valueOf(cpf.getText()), String.valueOf(tipoServico.getText()));
-        }
 
-        task.execute(String.valueOf(nome.getText()), String.valueOf(userId), "lab-password");
-        try {
-            String data = task.get();
-            Log.d("WS", data);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+//        HttpTask task = new HttpTask();
+//
+//        if(tipoUsuario == "Cliente"){
+//            task.execute(String.valueOf(nome.getText()), String.valueOf(userId), String.valueOf(dtNasc.getText()), String.valueOf(fone.getText()));
+//        }else{
+//            task.execute(String.valueOf(nome.getText()), String.valueOf(userId), String.valueOf(dtNasc.getText()), String.valueOf(fone.getText()), String.valueOf(cpf.getText()), String.valueOf(tipoServico.getText()));
+//        }
+//
+//        task.execute(String.valueOf(nome.getText()), String.valueOf(userId), "lab-password");
+//        try {
+//            String data = task.get();
+//            Log.d("WS", data);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
     }
 
     class HttpTask extends AsyncTask<String, Void, String> {

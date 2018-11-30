@@ -2,6 +2,7 @@ package com.unisc.trabalhodispmoveis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -38,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
+
+        mEmailView.setText("teste1@teste1.com");
+        mPasswordView.setText("123456");
 
         // Testes
 //        String userId = "123456";
@@ -83,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                         MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
                         return;
                     } else {
-                        String userId = "";
+                        int userId = serverResp.getInt("id_login");
                         navigateMain(userId);
                     }
                 } catch (JSONException e) {
@@ -137,9 +141,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void navigateMain(String userId) {
+    private void navigateMain(int userId) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("id_login", userId);
+        intent.putExtra("primeiroLogin", false);
         startActivity(intent);
     }
 

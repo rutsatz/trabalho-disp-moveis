@@ -62,7 +62,11 @@ public class CadastroActivity extends AppCompatActivity {
                         MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
                         return;
                     } else {
-                        String userId = serverResp.getString("id_login");
+
+                        JSONObject login = serverResp.getJSONObject("login");
+
+                        int userId = login.getInt("id_login");
+                        Log.d("teste", "userId " + userId);
                         navigateMain(userId);
                     }
                 } catch (JSONException e) {
@@ -91,6 +95,7 @@ public class CadastroActivity extends AppCompatActivity {
                 Log.e("teste", "statusCode: " + statusCode);
                 Log.e("teste", "throwable: " + throwable);
                 Log.e("teste", "2-Error: " + responseString);
+                MessageUtils.showAlert(context,"Email já cadastrado.");
             }
 
             @Override
@@ -108,9 +113,12 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
 
-    private void navigateMain(String userId) {
+    private void navigateMain(int userId) {
+        Log.d("teste", "navigateMain");
         Intent intent = new Intent(context, MainActivity.class);
+        Log.d("teste", "userId " + userId);
         intent.putExtra("id_login", userId);
+        intent.putExtra("primeiroLogin", true);
         startActivity(intent);
     }
 
