@@ -66,8 +66,8 @@ public class MeuPerfilActivity extends Activity {
 
         Log.d("testelista", "onCreate");
         Log.d("testelista", "userId " + userId);
-        Log.d("testelista", "getTipoPessoa " + MainActivity.usuario.getTipoPessoa());
-        Log.d("testelista", "Usuarios " + MainActivity.usuario.getPessoas());
+//        Log.d("testelista", "getTipoPessoa " + MainActivity.usuario.getTipoPessoa());
+//        Log.d("testelista", "Usuarios " + MainActivity.usuario.getPessoas());
 
     }
 

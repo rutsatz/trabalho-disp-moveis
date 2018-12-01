@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
 
-import com.unisc.trabalhodispmoveis.model.Pessoa;
 import com.unisc.trabalhodispmoveis.model.Usuario;
 
 @SuppressWarnings("deprecation")
@@ -30,7 +29,8 @@ public class MainActivity extends TabActivity {
         usuario = (Usuario) intent.getSerializableExtra("usuario");
         Log.d("teste", "%%%% usuario %%%" + usuario);
 
-        userId = usuario.getUsuarioPessoa().getUserId();
+        if (usuario != null)
+            userId = usuario.getUsuarioPessoa().getUserId();
         primeiroLogin = intent.getBooleanExtra("primeiroLogin", true);
 
         Log.d("teste", "MainActivity userId " + userId);

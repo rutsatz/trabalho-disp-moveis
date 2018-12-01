@@ -14,7 +14,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.unisc.trabalhodispmoveis.util.AppConstant;
+import com.unisc.trabalhodispmoveis.util.AppConstants;
 import com.unisc.trabalhodispmoveis.util.HttpUtils;
 import com.unisc.trabalhodispmoveis.util.MessageUtils;
 
@@ -53,7 +53,7 @@ public class MeusClientesActivity extends Activity {
 
         context = this;
 
-        HttpUtils.get(AppConstant.WS_LISTA_CONTRATO,null,handler);
+        HttpUtils.get(AppConstants.WS_LISTA_CONTRATO,null,handler);
 
         lstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -160,7 +160,7 @@ public class MeusClientesActivity extends Activity {
     };
 
     public void getListaCliente(){
-        HttpUtils.get(AppConstant.WS_LISTA_CLIENTE, null, handler);
+        HttpUtils.get(AppConstants.WS_LISTA_CLIENTE, null, handler);
     }
 
     public void preencheLista(List<Map<String,Object>> lista){
