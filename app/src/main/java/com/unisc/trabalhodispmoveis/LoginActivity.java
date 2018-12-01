@@ -11,12 +11,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.unisc.trabalhodispmoveis.model.Pessoa;
+import com.unisc.trabalhodispmoveis.model.TipoPessoa;
+import com.unisc.trabalhodispmoveis.model.Usuario;
 import com.unisc.trabalhodispmoveis.service.LoginService;
+import com.unisc.trabalhodispmoveis.service.PessoaService;
 import com.unisc.trabalhodispmoveis.util.MessageUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -31,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private static int userId;
+    private static String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,23 +81,26 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
-        JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+        // Lista Prestador
+        final JsonHttpResponseHandler handlerListaPrestador = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If the response is JSONObject instead of expected JSONArray
                 Log.d("teste", "---------------- this is response : " + response);
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
+                    Log.d("teste", "###### handlerListaPrestador #######");
                     Log.d("teste", "serverResp: " + serverResp);
                     boolean hasError = !serverResp.getBoolean("success");
                     Log.d("teste", "hasError: " + hasError);
                     if (hasError) {
-                        MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
+                        // Se prestador tbm nao existe, entao ocorreu um erro e nao achou os dados.
+                        MessageUtils.showAlert(context, "Dados não encontrados!");
                         return;
                     } else {
-                        int userId = serverResp.getInt("id_login");
-                        navigateMain(userId);
+                        // Se achou prestador, monta objeto.
+                        Usuario u = buildUsuario(userId, serverResp, TipoPessoa.PRESTADOR);
+                        navigateMain(u);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -127,23 +139,171 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
+        // Lista Cliente
+        final JsonHttpResponseHandler handlerListaCliente = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("teste", "---------------- this is response : " + response);
+                try {
+                    JSONObject serverResp = new JSONObject(response.toString());
+                    Log.d("teste", "###### handlerListaCliente #######");
+                    Log.d("teste", "serverResp: " + serverResp);
+                    boolean hasError = !serverResp.getBoolean("success");
+                    Log.d("teste", "hasError: " + hasError);
+                    if (hasError) {
+                        // Se cliente nao existe, busca prestador.
+                        listaPrestador(userId, handlerListaPrestador);
+                    } else {
+                        Usuario u = buildUsuario(userId, serverResp, TipoPessoa.CLIENTE);
+                        navigateMain(u);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "1-Error: " + errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                // Pull out the first event on the public timeline
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "2-Error: " + responseString);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "Error 2");
+            }
+
+        };
+
+
+        // Valida Login
+        JsonHttpResponseHandler handlerLogin = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("teste", "---------------- this is response : " + response);
+                try {
+                    JSONObject serverResp = new JSONObject(response.toString());
+                    Log.d("teste", "serverResp: " + serverResp);
+                    boolean hasError = !serverResp.getBoolean("success");
+                    Log.d("teste", "hasError: " + hasError);
+                    if (hasError) {
+                        MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
+                        return;
+                    } else {
+                        // Se usuario existe, busca dados do cliente.
+                        userId = serverResp.getInt("id_login");
+                        LoginActivity.email = serverResp.getString("email");
+                        listaCliente(userId, handlerListaCliente);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "1-Error: " + errorResponse);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                // Pull out the first event on the public timeline
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "2-Error: " + responseString);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "Error 2");
+            }
+
+        };
+
         LoginService loginService = new LoginService();
         // Async
-        loginService.doLogin(email, senha, handler);
+        loginService.doLogin(email, senha, handlerLogin);
+    }
 
+    private Usuario buildUsuario(int userId, JSONObject serverResp, TipoPessoa tipoPessoa) throws JSONException {
 
-//        String validacao = obj.getString("success");
-//        if (validacao == "true") {
-//            String userId = obj.getString("id_login");
-//
+        Usuario usuario = new Usuario();
 
+        List<Pessoa> pessoas = new ArrayList<>();
 
+        Log.d("buildp", "buildPessoa " + serverResp);
+        JSONArray jsonArray = serverResp.getJSONArray("cliente");
+        Log.d("buildp", "jsonArray " + jsonArray);
+        for(int i=0; i < jsonArray.length(); i++){
+            Pessoa pessoa = new Pessoa();
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            pessoa.setUserId(jsonObject.getInt("id_login"));
+            pessoa.setNome(jsonObject.getString("nome"));
+            pessoa.setDataNascimento(jsonObject.getString("dt_nasc"));
+            pessoa.setTelefone(jsonObject.getString("telefone"));
+
+            pessoas.add(pessoa);
+
+        }
+        usuario.setPessoas(pessoas);
+        usuario.setTipoPessoa(tipoPessoa);
+
+        Pessoa pessoaUsuario= new Pessoa();
+        pessoaUsuario.setUserId(userId);
+        usuario.setUsuarioPessoa(pessoaUsuario);
+
+        return usuario;
+    }
+
+    private void listaCliente(int userId, JsonHttpResponseHandler handler){
+        PessoaService pessoaService = new PessoaService();
+        pessoaService.listaCliente(userId, handler);
+    }
+
+    private void listaPrestador(int userId, JsonHttpResponseHandler handler){
+        PessoaService pessoaService = new PessoaService();
+        pessoaService.listaPrestador(userId, handler);
     }
 
 
-    private void navigateMain(int userId) {
+    private void navigateMain(Usuario usuario) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("id_login", userId);
+
+        Log.d("teste", "navigateMain usuario " + usuario);
+
+        intent.putExtra("usuario", usuario);
         intent.putExtra("primeiroLogin", false);
         startActivity(intent);
     }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
-            android:text="Nome:"/>
+            android:text="Nome:"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/perfilNome"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -35,18 +35,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
-            android:text="Data Nascimento:"/>
+            android:text="Data Nascimento:"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/perfilDataNasc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:inputType="date" />
 
     </LinearLayout>
 
@@ -58,18 +58,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
-            android:text="Email:"/>
+            android:text="Email:"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/perfilEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:inputType="textEmailAddress" />
 
     </LinearLayout>
 
@@ -81,18 +81,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
-            android:text="Telefone:"/>
+            android:text="Telefone:"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/perfilTel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="phone"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:inputType="phone" />
 
     </LinearLayout>
 
@@ -104,9 +104,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
-            android:text="Endereço:"/>
+            android:text="Endereço:"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/perfilEndereco"
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
     </LinearLayout>
 
@@ -126,9 +126,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
-            android:text="CPF:"/>
+            android:text="CPF:"
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/perfilCPF"
@@ -136,12 +136,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp" />
 
     </LinearLayout>
 
 
     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radioTipoCliente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -154,12 +155,14 @@
             android:layout_marginRight="50dp"
             android:onClick="onRadioButtonClicked"
             android:text="Cliente" />
-        <RadioButton android:id="@+id/radioPrestador"
+
+        <RadioButton
+            android:id="@+id/radioPrestador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:text="Prestador"
-            android:onClick="onRadioButtonClicked"/>
+            android:onClick="onRadioButtonClicked"
+            android:text="Prestador" />
     </RadioGroup>
 
     <LinearLayout
@@ -171,21 +174,21 @@
             android:id="@+id/perfilTipoServTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="Tipo de Serviço:"
-            android:visibility="invisible"/>
+            android:textSize="17sp"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/perfilTipoServ"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
     </LinearLayout>
 
@@ -193,31 +196,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
-            android:onClick="perfilSalvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Salvar"/>
+            android:onClick="perfilSalvar"
+            android:text="Salvar" />
 
         <Button
-            android:onClick="perfilCancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Cancelar"/>
+            android:onClick="perfilCancelar"
+            android:text="Cancelar" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/userIdperfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="10sp"
         android:layout_marginLeft="10dp"
-        android:text="id"/>
+        android:text="id"
+        android:textSize="10sp" />
 
 </LinearLayout>

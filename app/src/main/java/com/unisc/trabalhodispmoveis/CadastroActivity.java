@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.unisc.trabalhodispmoveis.model.Pessoa;
+import com.unisc.trabalhodispmoveis.model.Usuario;
 import com.unisc.trabalhodispmoveis.service.CadastroService;
 import com.unisc.trabalhodispmoveis.util.MessageUtils;
 
@@ -22,6 +24,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     TextView novoUser, senha, senhaTeste;
     Context context;
+    Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class CadastroActivity extends AppCompatActivity {
         String strEmail = String.valueOf(novoUser.getText());
         String strSenha = String.valueOf(senha.getText());
         String strRepeteSenha = String.valueOf(senhaTeste.getText());
+
+        usuario = new Usuario();
 
         if (!strSenha.equals(strRepeteSenha)) {
             senha.setText("");
@@ -66,8 +71,15 @@ public class CadastroActivity extends AppCompatActivity {
                         JSONObject login = serverResp.getJSONObject("login");
 
                         int userId = login.getInt("id_login");
+                        String email = login.getString("email");
+
+                        Pessoa pessoaUsuario = new Pessoa();
+                        pessoaUsuario.setUserId(userId);
+                        pessoaUsuario.setEmail(email);
+                        usuario = new Usuario();
+                        usuario.setUsuarioPessoa(pessoaUsuario);
                         Log.d("teste", "userId " + userId);
-                        navigateMain(userId);
+                        navigateMain(usuario);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -113,11 +125,10 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
 
-    private void navigateMain(int userId) {
+    private void navigateMain(Usuario usuario) {
         Log.d("teste", "navigateMain");
         Intent intent = new Intent(context, MainActivity.class);
-        Log.d("teste", "userId " + userId);
-        intent.putExtra("id_login", userId);
+        intent.putExtra("usuario", usuario);
         intent.putExtra("primeiroLogin", true);
         startActivity(intent);
     }
