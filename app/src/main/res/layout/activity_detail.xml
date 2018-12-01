@@ -12,49 +12,139 @@
     tools:context=".DetailActivity">
 
     <TextView
+        android:id="@+id/tituloDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginBottom="10dp"
-        android:text="Cliente"
+        android:text="titulo"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/nomeDetail"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="nome"
-        android:textSize="17sp" />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome:"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/dtNascDetail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="dt_nasc"
-        android:textSize="17sp" />
+        <TextView
+            android:id="@+id/nomeDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nome"
+            android:textSize="17sp" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/foneDetail"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="telefone"
-        android:textSize="17sp" />
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data de nasc.:"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp" />
 
-    <TextView
-        android:id="@+id/cpfDetail"
+        <TextView
+            android:id="@+id/dtNascDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="dt_nasc"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="cpf"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Telefone:"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/foneDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="telefone"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linhaCpfDetail"
         android:visibility="gone"
-        android:textSize="17sp" />
-
-    <TextView
-        android:id="@+id/tipoServicoDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="tipo"
-        android:visibility="gone"
-        android:textSize="17sp" />
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CPF:"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/cpfDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="cpf"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linhaServDetail"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servico:"
+            android:textStyle="bold"
+            android:layout_marginRight="10dp"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tipoServicoDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tipo"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/infoContratoDetail"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <Button
+            android:onClick="onClickContratar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Contratar" />
+
+
+    </LinearLayout>
 
 </LinearLayout>

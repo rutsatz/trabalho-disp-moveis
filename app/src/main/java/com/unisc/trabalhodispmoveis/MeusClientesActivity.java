@@ -67,6 +67,8 @@ public class MeusClientesActivity extends Activity {
                 intent.putExtra("dt_nasc", (String) mapa.get("dt_nasc"));
                 intent.putExtra("telefone", (String) mapa.get("telefone"));
 
+                intent.putExtra("layout", "clientes");
+
                 startActivity(intent);
 
             }

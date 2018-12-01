@@ -68,6 +68,8 @@ public class MeusContatosActivity extends Activity {
                 intent.putExtra("cpf", (String) mapa.get("cpf"));
                 intent.putExtra("tipo_servico", (String) mapa.get("tipo_servico"));
 
+                intent.putExtra("layout", "contatos");
+
                 startActivity(intent);
 
             }

@@ -16,7 +16,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/emailList"
+            android:id="@+id/infoAlList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="infoA"

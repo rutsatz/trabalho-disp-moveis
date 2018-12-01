@@ -31,7 +31,7 @@ public class MainActivity extends TabActivity {
 
         if (usuario != null)
             userId = usuario.getUsuarioPessoa().getUserId();
-        primeiroLogin = intent.getBooleanExtra("primeiroLogin", true);
+        primeiroLogin = intent.getBooleanExtra("primeiroLogin", false);
 
         Log.d("teste", "MainActivity userId " + userId);
         Log.d("teste", "MainActivity primeiroLogin " + primeiroLogin);

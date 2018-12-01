@@ -15,6 +15,8 @@ class MeuAdapter extends SimpleAdapter {
 
     List<Map<String, Object>> lista;
 
+
+
     public MeuAdapter(Context ctx, List<Map<String, Object>> lista, int uma_linha, String[] strings, int[] ints) {
         super(ctx, lista, uma_linha,strings,ints);
         this.lista = lista;
@@ -27,17 +29,25 @@ class MeuAdapter extends SimpleAdapter {
         Map<String, Object> mapa = lista.get(position);
 
         String nome = (String) mapa.get("nome");
-        String email = (String) mapa.get("email");
         String fone = (String) mapa.get("telefone");
+
+        String tipoServico = (String) mapa.get("tipo_servico");
 
         TextView tv1 = v.findViewById(R.id.nomeList);
         tv1.setText(nome);
 
-        //TextView tv2 = v.findViewById(R.id.emailList);
-        //tv2.setText(email);
+        TextView tv2 = v.findViewById(R.id.foneList);
+        tv2.setText(fone);
 
-        TextView tv3 = v.findViewById(R.id.foneList);
-        tv3.setText(fone);
+        TextView tv3 = v.findViewById(R.id.infoAlList);
+        tv3.setText(tipoServico);
+
+        if(v.getContext() instanceof servicosTab){
+            tv2.setVisibility(View.GONE);
+            tv3.setVisibility(View.VISIBLE);
+            tv1.setTextSize(15);
+            tv3.setTextSize(20);
+        }
 
         return v;
     }
