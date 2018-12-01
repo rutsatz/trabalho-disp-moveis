@@ -26,21 +26,18 @@ class MeuAdapter extends SimpleAdapter {
 
         Map<String, Object> mapa = lista.get(position);
 
-        Bitmap bmp = (Bitmap) mapa.get("img");
         String nome = (String) mapa.get("nome");
-        String matr = (String) mapa.get("matr");
+        String email = (String) mapa.get("email");
+        String fone = (String) mapa.get("telefone");
 
         TextView tv1 = v.findViewById(R.id.nomeList);
         tv1.setText(nome);
 
-        TextView tv2 = v.findViewById(R.id.infoAList);
-        tv2.setText(matr);
+        //TextView tv2 = v.findViewById(R.id.emailList);
+        //tv2.setText(email);
 
-        TextView tv3 = v.findViewById(R.id.infoBList);
-        tv2.setText(matr);
-
-        ImageView img = v.findViewById(R.id.imgList);
-        img.setImageBitmap(bmp);
+        TextView tv3 = v.findViewById(R.id.foneList);
+        tv3.setText(fone);
 
         return v;
     }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:context=".DetailActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="Cliente"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/nomeDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="nome"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/dtNascDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="dt_nasc"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/foneDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="telefone"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/cpfDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cpf"
+        android:visibility="gone"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tipoServicoDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tipo"
+        android:visibility="gone"
+        android:textSize="17sp" />
+
+
+</LinearLayout>

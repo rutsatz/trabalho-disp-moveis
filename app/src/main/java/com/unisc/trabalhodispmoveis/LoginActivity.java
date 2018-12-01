@@ -44,10 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setText("123456");
 
         // Testes
-//        String userId = "123456";
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.putExtra("id_login", userId);
-//        startActivity(intent);
+        String userId = "123456";
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("id_login", userId);
+        startActivity(intent);
 //        if (1 == 1) return;
 
         context = this;
