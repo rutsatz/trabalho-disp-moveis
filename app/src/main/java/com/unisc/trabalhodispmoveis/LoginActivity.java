@@ -225,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         listaCliente(userId, handlerListaCliente);
 
-//                         Testes
+//                       @@ Testes
 //                        listaPrestador(userId, handlerListaPrestador);
                     }
                 } catch (JSONException e) {

@@ -108,7 +108,7 @@ public class MeuPerfilActivity extends Activity {
                         return;
                     } else {
                         MessageUtils.showToast(context, "Dados salvos com sucesso!");
-                        showTabs();
+                        MainActivity.showTabs();
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -162,13 +162,6 @@ public class MeuPerfilActivity extends Activity {
             Usuario usuario = new Usuario(TipoPessoa.PRESTADOR, pessoa);
             meuPerfilService.salvarPrestador(usuario, handler);
         }
-    }
-
-    private void showTabs() {
-        MainActivity.tabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE); // Meus clientes
-        MainActivity.tabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE); // Meus contratos
-        MainActivity.tabHost.getTabWidget().getChildAt(3).setVisibility(View.VISIBLE); // Servicos
-        MainActivity.tabHost.setCurrentTab(1); // Meus clientes
     }
 
     public void onRadioButtonClicked(View view) {
