@@ -2,7 +2,6 @@ package com.unisc.trabalhodispmoveis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,14 +31,14 @@ import cz.msebera.android.httpclient.Header;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private static int userId;
+    private static String email;
     Context context;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private static int userId;
-    private static String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setText("123456");
 
         // Testes
-        String userId = "123456";
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("id_login", userId);
-        startActivity(intent);
+//        String userId = "123456";
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("id_login", userId);
+//        startActivity(intent);
 //        if (1 == 1) return;
 
         context = this;
@@ -99,8 +98,12 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     } else {
                         // Se achou prestador, monta objeto.
-                        Usuario u = buildUsuario(userId, serverResp, TipoPessoa.PRESTADOR);
-                        navigateMain(u);
+                        try {
+                            Usuario u = buildUsuario(userId, serverResp, TipoPessoa.PRESTADOR);
+                            navigateMain(u);
+                        } catch (JSONException e) {
+                            MessageUtils.showAlert(context, "Erro ao processar dados do server!");
+                        }
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -151,13 +154,19 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("teste", "serverResp: " + serverResp);
                     boolean hasError = !serverResp.getBoolean("success");
                     Log.d("teste", "hasError: " + hasError);
+
                     if (hasError) {
-                        // Se cliente nao existe, busca prestador.
-                        listaPrestador(userId, handlerListaPrestador);
+                        MessageUtils.showAlert(context, "Dados nao encontrados!");
+                        return;
                     } else {
-                        Usuario u = buildUsuario(userId, serverResp, TipoPessoa.CLIENTE);
-                        navigateMain(u);
+                        try {
+                            Usuario u = buildUsuario(userId, serverResp, TipoPessoa.CLIENTE);
+                            navigateMain(u);
+                        } catch (JSONException e) {
+                            MessageUtils.showAlert(context, "Erro ao processar dados do servidor.");
+                        }
                     }
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -213,7 +222,11 @@ public class LoginActivity extends AppCompatActivity {
                         // Se usuario existe, busca dados do cliente.
                         userId = serverResp.getInt("id_login");
                         LoginActivity.email = serverResp.getString("email");
+
                         listaCliente(userId, handlerListaCliente);
+
+//                         Testes
+//                        listaPrestador(userId, handlerListaPrestador);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -262,10 +275,20 @@ public class LoginActivity extends AppCompatActivity {
 
         List<Pessoa> pessoas = new ArrayList<>();
 
+        Log.d("teste", "tipoPessoa " + tipoPessoa);
         Log.d("buildp", "buildPessoa " + serverResp);
-        JSONArray jsonArray = serverResp.getJSONArray("cliente");
+
+        String field;
+        JSONArray jsonArray;
+        if (tipoPessoa == TipoPessoa.CLIENTE) {
+            field = "cliente";
+        } else {
+            field = "prestador";
+        }
+
+        jsonArray = serverResp.getJSONArray(field);
         Log.d("buildp", "jsonArray " + jsonArray);
-        for(int i=0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             Pessoa pessoa = new Pessoa();
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -280,19 +303,19 @@ public class LoginActivity extends AppCompatActivity {
         usuario.setPessoas(pessoas);
         usuario.setTipoPessoa(tipoPessoa);
 
-        Pessoa pessoaUsuario= new Pessoa();
+        Pessoa pessoaUsuario = new Pessoa();
         pessoaUsuario.setUserId(userId);
         usuario.setUsuarioPessoa(pessoaUsuario);
 
         return usuario;
     }
 
-    private void listaCliente(int userId, JsonHttpResponseHandler handler){
+    private void listaCliente(int userId, JsonHttpResponseHandler handler) {
         PessoaService pessoaService = new PessoaService();
         pessoaService.listaCliente(userId, handler);
     }
 
-    private void listaPrestador(int userId, JsonHttpResponseHandler handler){
+    private void listaPrestador(int userId, JsonHttpResponseHandler handler) {
         PessoaService pessoaService = new PessoaService();
         pessoaService.listaPrestador(userId, handler);
     }
