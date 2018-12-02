@@ -6,6 +6,11 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.unisc.trabalhodispmoveis.service.ContratoService;
+
+import java.util.ArrayList;
+
 public class MessageUtils {
 
     public static final void showToast(Context context, String msg) {
@@ -21,28 +26,22 @@ public class MessageUtils {
         dialog.show();
     }
 
-    public static final boolean showConfirm(Context context, String msg) {
-        final boolean[] confirm = new boolean[1];
+    public static final void showConfirm(Context context, String msg, final ArrayList<String> dados, final JsonHttpResponseHandler handler) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(msg);
         builder.setTitle("Atenção!");
         builder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                confirm[0] = true;
+                ContratoService contratoService = new ContratoService();
+                contratoService.salvarNovoContrato(dados.get(0), dados.get(1), dados.get(2), dados.get(3), dados.get(4), dados.get(5), handler);
             }
         });
-        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                confirm[0] = false;
-            }
-         });
+        builder.setNegativeButton("Não", null);
         AlertDialog dialog = builder.create();
 
         dialog.show();
-
-        return confirm[0];
     }
 
 }

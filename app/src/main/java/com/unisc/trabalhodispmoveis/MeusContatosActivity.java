@@ -32,7 +32,7 @@ public class MeusContatosActivity extends Activity {
 
     private ListView lstView;
 
-    int userId = 7;
+    int userId;
     Context context;
 
     List<Map<String,Object>> listaContatos;
@@ -43,14 +43,15 @@ public class MeusContatosActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_contatos);
 
+        userId = MainActivity.userId;
+        context = this;
+
         lstView = findViewById(R.id.lstContatos);
 
         listaID = new ArrayList<Integer>();
         listaID.clear();
 
         listaContatos = new ArrayList<>();
-
-        context = this;
 
         HttpUtils.get(AppConstants.WS_LISTA_CONTRATO,null,handler);
 

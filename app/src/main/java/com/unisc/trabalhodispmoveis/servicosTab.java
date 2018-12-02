@@ -38,9 +38,8 @@ public class servicosTab extends Activity {
     private ListView lstView;
     private EditText buscaServico;
 
-    int userId = 7;
+    int userId;
     Context context;
-
     boolean emBusca;
 
     List<Map<String,Object>> listaPrestador, listaBusca;
@@ -50,9 +49,10 @@ public class servicosTab extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicos_tab);
-        emBusca = false;
 
-        Log.e("teste", "emBusca: " + emBusca);
+        userId = MainActivity.userId;
+        context = this;
+        emBusca = false;
 
         buscaServico = (EditText) findViewById(R.id.buscaServico);
 
@@ -61,8 +61,6 @@ public class servicosTab extends Activity {
         listaPrestador = new ArrayList<>();
 
         listaBusca = new ArrayList<>();
-
-        context = this;
 
         HttpUtils.get(AppConstants.WS_LISTA_PRESTADOR,null,handler);
 
