@@ -85,5 +85,6 @@ public class MainActivity extends TabActivity {
             showTabs();
         }
         context = this;
+
     }
 }

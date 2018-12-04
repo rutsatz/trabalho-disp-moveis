@@ -3,14 +3,12 @@ package com.unisc.trabalhodispmoveis;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.unisc.trabalhodispmoveis.util.AppConstants;
@@ -30,13 +28,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class MeusContatosActivity extends Activity {
 
-    private ListView lstView;
-
     int userId;
     Context context;
-
-    List<Map<String,Object>> listaContatos;
+    List<Map<String, Object>> listaContatos;
     ArrayList<Integer> listaID;
+    private ListView lstView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +49,9 @@ public class MeusContatosActivity extends Activity {
 
         listaContatos = new ArrayList<>();
 
-        HttpUtils.get(AppConstants.WS_LISTA_CONTRATO,null,handler);
+        //atualizaLista();
+
+        //HttpUtils.get(AppConstants.WS_LISTA_CONTRATO,null,handler);
 
         lstView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,22 +76,23 @@ public class MeusContatosActivity extends Activity {
 
     }
 
-    JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            // If the response is JSONObject instead of expected JSONArray
-            Log.d("teste2", "---------------- this is response : " + response);
-            try {
-                JSONObject serverResp = new JSONObject(response.toString());
-                Log.d("teste", "serverResp: " + serverResp);
-                boolean hasError = !serverResp.getBoolean("success");
-                Log.d("teste", "hasError: " + hasError);
-                if (hasError) {
-                    MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
-                    return;
-                } else {
+    public void atualizaLista() {
 
-                    if (listaID.size() == 0) {
+        final JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("teste2", "---------------- this is response : " + response);
+                try {
+                    JSONObject serverResp = new JSONObject(response.toString());
+                    Log.d("teste", "serverResp: " + serverResp);
+                    boolean hasError = !serverResp.getBoolean("success");
+                    Log.d("teste", "hasError: " + hasError);
+                    if (hasError) {
+                        MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
+                        return;
+                    } else {
+
                         Log.d("teste", "if");
                         //Filtra o id_cliente dos contratos pertencentes ao userId
                         for (int i = 0; i < Integer.valueOf(serverResp.getString("total")); i++) {
@@ -104,78 +103,136 @@ public class MeusContatosActivity extends Activity {
                                 //Log.d("teste", "add: "+Integer.valueOf(serverResp.getJSONArray("contrato").getJSONObject(i).getString("id_prestador")));
                             }
                         }
-
                         getListaContatos();
-
-                    } else {
-                        Log.d("teste", "else");
-                        for (int x = 0; x < Integer.valueOf(serverResp.getString("total")); x++) {
-                            int id_prestador = Integer.valueOf(serverResp.getJSONArray("prestador").getJSONObject(x).getString("id_prestador"));
-                            Log.d("teste", "prestador: "+id_prestador);
-                            for (int i = 0; i < listaID.size(); i++) {
-                                if (id_prestador == listaID.get(i)) {
-                                    Log.d("teste", "prestador: "+id_prestador +" = "+listaID.get(i));
-                                    Map<String, Object> mapa = new HashMap<>();
-                                    mapa.put("id_prestador", Integer.valueOf(serverResp.getJSONArray("prestador").getJSONObject(i).getString("id_prestador")));
-                                    mapa.put("nome", serverResp.getJSONArray("prestador").getJSONObject(i).getString("nome"));
-                                    mapa.put("dt_nasc", serverResp.getJSONArray("prestador").getJSONObject(i).getString("dt_nasc"));
-                                    mapa.put("telefone", serverResp.getJSONArray("prestador").getJSONObject(i).getString("telefone"));
-                                    mapa.put("cpf", serverResp.getJSONArray("prestador").getJSONObject(i).getString("cpf"));
-                                    mapa.put("tipo_servico", serverResp.getJSONArray("prestador").getJSONObject(i).getString("tipo_servico"));
-
-                                    listaContatos.add(mapa);
-                                }
-                            }
-                        }
-                        preencheLista(listaContatos);
                     }
-
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
-        }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            super.onFailure(statusCode, headers, throwable, errorResponse);
-            Log.e("teste", "statusCode: " + statusCode);
-            Log.e("teste", "throwable: " + throwable);
-            Log.e("teste", "1-Error: " + errorResponse);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "1-Error: " + errorResponse);
+            }
 
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
-            // Pull out the first event on the public timeline
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray timeline) {
+                // Pull out the first event on the public timeline
 
-        }
+            }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            super.onFailure(statusCode, headers, responseString, throwable);
-            Log.e("teste", "statusCode: " + statusCode);
-            Log.e("teste", "throwable: " + throwable);
-            Log.e("teste", "2-Error: " + responseString);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "2-Error: " + responseString);
+            }
 
-        @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-            super.onFailure(statusCode, headers, throwable, errorResponse);
-            Log.e("teste", "Error 2");
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "Error 2");
+            }
 
-    };
+        };
 
-    public void getListaContatos(){
-        HttpUtils.get(AppConstants.WS_LISTA_PRESTADOR, null, handler);
+        HttpUtils.get(AppConstants.WS_LISTA_CONTRATO, null, handler);
     }
 
-    public void preencheLista(List<Map<String,Object>> lista){
+    public void getListaContatos() {
+
+
+        final JsonHttpResponseHandler handlerListaPrestador = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                Log.d("teste2", "---------------- this is response : " + response);
+                try {
+                    JSONObject serverResp = new JSONObject(response.toString());
+                    Log.d("teste", "serverResp: " + serverResp);
+                    boolean hasError = !serverResp.getBoolean("success");
+                    Log.d("teste", "hasError: " + hasError);
+                    if (hasError) {
+                        MessageUtils.showAlert(context, "Usuário ou senha inválidos!");
+                        return;
+                    } else {
+                        JSONArray prestador = serverResp.getJSONArray("prestador");
+
+                        //for (int x = 0; x < Integer.valueOf(serverResp.getString("total")); x++) {
+                        //    int id_prestador = 0;
+                        //    id_prestador = Integer.valueOf(prestador.getJSONObject(x).getString("id_prestador"));
+
+                        //Log.d("teste", "prestador: " + id_prestador);
+                        for (int i = 0; i < listaID.size(); i++) {
+
+                            for (int x = 0; x < Integer.valueOf(serverResp.getString("total")); x++) {
+                                int id_prestador = 0;
+                                id_prestador = Integer.valueOf(prestador.getJSONObject(x).getString("id_prestador"));
+
+
+                                if (id_prestador == listaID.get(i)) {
+
+                                    Log.d("teste", "prestador: " + id_prestador + " = " + listaID.get(i));
+                                    Map<String, Object> mapa = new HashMap<>();
+                                    int id = Integer.valueOf(prestador.getJSONObject(x).getString("id_prestador"));
+                                    mapa.put("id_prestador", id);
+                                    String nome = prestador.getJSONObject(x).getString("nome");
+                                    mapa.put("nome", nome);
+                                    mapa.put("dt_nasc", prestador.getJSONObject(x).getString("dt_nasc"));
+                                    mapa.put("telefone", prestador.getJSONObject(x).getString("telefone"));
+                                    mapa.put("cpf", prestador.getJSONObject(x).getString("cpf"));
+                                    mapa.put("tipo_servico", prestador.getJSONObject(x).getString("tipo_servico"));
+
+                                    listaContatos.add(mapa);
+
+                                }
+
+
+                            }
+                        }
+
+                        preencheLista(listaContatos);
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("teste", "statusCode: " + statusCode);
+                Log.e("teste", "throwable: " + throwable);
+                Log.e("teste", "1-Error: " + errorResponse);
+            }
+
+
+        };
+        HttpUtils.get(AppConstants.WS_LISTA_PRESTADOR, null, handlerListaPrestador);
+
+
+    }
+
+    public void preencheLista(List<Map<String, Object>> lista) {
         SimpleAdapter adapter = new MeuAdapter(context, lista, R.layout.uma_linha,
                 new String[]{"nome", "telefone"},
                 new int[]{R.id.nomeList, R.id.foneList});
 
         lstView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listaContatos.clear();
+        listaID.clear();
+        atualizaLista();
+        Log.d("resume", "on resume");
     }
 }

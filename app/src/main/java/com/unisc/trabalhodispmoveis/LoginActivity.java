@@ -225,8 +225,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         listaCliente(userId, handlerListaCliente);
 
-//                       @@ Testes
-//                        listaPrestador(userId, handlerListaPrestador);
+//                      @@ Testes
+                       //listaPrestador(userId, handlerListaPrestador);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

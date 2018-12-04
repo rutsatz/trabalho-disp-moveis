@@ -28,8 +28,6 @@ public class DetailActivity extends AppCompatActivity {
 
     Context context;
 
-    int userId = 2;
-
     int id_prestador; // e  definido no quando o usuario clica no botao para contrata-lo
 
     @Override
@@ -154,7 +152,7 @@ public class DetailActivity extends AppCompatActivity {
         Log.d("teste","Longitude"+loc.getLongitude());
         Log.d("teste","Latitude"+loc.getLatitude());
         ArrayList<String> dados = new ArrayList<>();
-        dados.add(String.valueOf(userId));
+        dados.add(String.valueOf(MainActivity.userId));
         dados.add(String.valueOf(id_prestador));
         dados.add(dateString);
         dados.add("Santa Cruz do Sul");
