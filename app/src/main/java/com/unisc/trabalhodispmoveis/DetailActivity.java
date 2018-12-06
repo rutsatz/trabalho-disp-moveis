@@ -2,8 +2,8 @@ package com.unisc.trabalhodispmoveis;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.unisc.trabalhodispmoveis.service.ServiceGPS;
+import com.unisc.trabalhodispmoveis.util.AppConstants;
 import com.unisc.trabalhodispmoveis.util.MessageUtils;
 
 import org.json.JSONArray;
@@ -19,8 +20,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -58,11 +57,11 @@ public class DetailActivity extends AppCompatActivity {
         tvDtNasc.setText(intent.getStringExtra("dt_nasc"));
         tvNome.setText(intent.getStringExtra("nome"));
 
-        if(layout.equals("clientes")){
+        if (layout.equals("clientes")) {
             tvTitulo.setText("Clientes");
         }
 
-        if(layout.equals("contatos")){
+        if (layout.equals("contatos")) {
             tvTitulo.setText("Contatos");
 
             tvCpf.setText(intent.getStringExtra("cpf"));
@@ -72,7 +71,7 @@ public class DetailActivity extends AppCompatActivity {
             linhaServDetail.setVisibility(View.VISIBLE);
         }
 
-        if(layout.equals("servicos")){
+        if (layout.equals("servicos")) {
             tvTitulo.setText("Serviços");
 
             infoContrato.setVisibility(View.VISIBLE);
@@ -88,7 +87,6 @@ public class DetailActivity extends AppCompatActivity {
         }
 
     }
-
 
     public void onClickContratar(View view) {
 
@@ -145,34 +143,30 @@ public class DetailActivity extends AppCompatActivity {
         };
 
         long date = System.currentTimeMillis();
-        SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.DATE_FORMAT);
         String dateString = sdf.format(date);
 
         ServiceGPS loc = new ServiceGPS(context);
-        Log.d("teste","Longitude"+loc.getLongitude());
-        Log.d("teste","Latitude"+loc.getLatitude());
+        Log.d("teste", "Longitude" + loc.getLongitude());
+        Log.d("teste", "Latitude" + loc.getLatitude());
         ArrayList<String> dados = new ArrayList<>();
         dados.add(String.valueOf(MainActivity.userId));
         dados.add(String.valueOf(id_prestador));
         dados.add(dateString);
         dados.add("Santa Cruz do Sul");
 
-        if (loc.getLatitude() != null){
+        if (loc.getLatitude() != null) {
             dados.add(loc.getLatitude());
-        }else{
+        } else {
             dados.add("-29.6995877");
         }
 
-        if (loc.getLongitude() != null){
+        if (loc.getLongitude() != null) {
             dados.add(loc.getLatitude());
-        }else{
+        } else {
             dados.add("-52.43861");
         }
 
         MessageUtils.showConfirm(this, "Tem certeza que deseja contratar este serviço.", dados, handler);
     }
-
-
-
-
 }

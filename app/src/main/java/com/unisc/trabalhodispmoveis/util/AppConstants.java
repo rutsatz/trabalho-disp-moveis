@@ -10,8 +10,6 @@ public class AppConstants {
     public static final String WS_ATUALIZA_LOGIN = "atualizaLogin.php";
     public static final String WS_ATUALIZA_PRESTADOR = "atualizaPrestador.php";
     public static final String WS_CRIA_CLIENTE = "criaCliente.php";
-    public static final String WS_LISTA_CLIENTE_POR_LOGIN = "listaClienteporLogin.php";
-    public static final String WS_LISTA_PRESTADOR_POR_LOGIN = "listPrestadorporLogin.php";
     public static final String WS_CRIA_CONTRATO = "criaContrato.php";
     public static final String WS_CRIA_LOGIN = "criaLogin.php";
     public static final String WS_CRIA_PRESTADOR = "criaPrestador.php";
@@ -26,4 +24,7 @@ public class AppConstants {
     public static final String WS_LISTA_PRESTADOR = "listaPrestador.php";
     public static final String WS_LISTA_PRESTADORES_CONTRATADOS = "listaPrestadoresContratados.php";
     public static final String WS_LISTA_PRESTADOR_POR_SERVICO = "listaPrestadorPorServico.php";
+    public static final String WS_LISTA_CLIENTE_POR_LOGIN = "listaClientePorLogin.php";
+    public static final String WS_LISTA_PRESTADOR_POR_LOGIN = "listaPrestadorPorLogin.php";
+    public static final String WS_LISTA_CONTRATO_POR_NOME = "listaContratoPorNome.php";
 }

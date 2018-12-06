@@ -36,6 +36,7 @@ public class MeuPerfilActivity extends Activity {
     private RadioButton radioCliente, radioPrestador;
     private RadioGroup radioTipoCliente;
     private int userId;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +63,20 @@ public class MeuPerfilActivity extends Activity {
         userId = MainActivity.userId;
 
         userIDtv.setText(Integer.toString(userId));
+        usuario = MainActivity.usuario;
+
+        if (usuario != null) {
+            Log.d("testelista", "getTipoPessoa " + usuario.getTipoPessoa());
+            Pessoa pessoa = usuario.getUsuarioPessoa();
+            nome.setText(pessoa.getNome());
+            dtNasc.setText(pessoa.getDataNascimentoAsString());
+            email.setText(pessoa.getEmail());
+            fone.setText(pessoa.getTelefone());
+            if (usuario.getTipoPessoa() == TipoPessoa.PRESTADOR) {
+                radioPrestador.setChecked(true);
+            }
+        }
         context = this;
-
-        Log.d("testelista", "onCreate");
-        Log.d("testelista", "userId " + userId);
-//        Log.d("testelista", "getTipoPessoa " + MainActivity.usuario.getTipoPessoa());
-//        Log.d("testelista", "Usuarios " + MainActivity.usuario.getPessoas());
-
     }
 
     public void perfilCancelar(View view) {

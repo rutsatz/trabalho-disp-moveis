@@ -1,10 +1,8 @@
 package com.unisc.trabalhodispmoveis;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -42,7 +40,7 @@ class MeuAdapter extends SimpleAdapter {
         TextView tv3 = v.findViewById(R.id.infoAlList);
         tv3.setText(tipoServico);
 
-        if(v.getContext() instanceof servicosTab){
+        if(v.getContext() instanceof ServicosTab){
             tv2.setVisibility(View.GONE);
             tv3.setVisibility(View.VISIBLE);
             tv1.setTextSize(15);

@@ -10,13 +10,13 @@ public class PessoaService {
     public void listaCliente(int userId, JsonHttpResponseHandler handler) {
         RequestParams rp = new RequestParams();
         rp.add("id_login", String.valueOf(userId));
-        HttpUtils.post(AppConstants.WS_LISTA_CLIENTE, rp, handler);
+        HttpUtils.post(AppConstants.WS_LISTA_CLIENTE_POR_LOGIN, rp, handler);
     }
 
     public void listaPrestador(int userId, JsonHttpResponseHandler handler) {
         RequestParams rp = new RequestParams();
         rp.add("id_login", String.valueOf(userId));
-        HttpUtils.post(AppConstants.WS_LISTA_PRESTADOR, rp, handler);
+        HttpUtils.post(AppConstants.WS_LISTA_PRESTADOR_POR_LOGIN, rp, handler);
     }
 
 }

@@ -3,7 +3,6 @@ package com.unisc.trabalhodispmoveis.util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,7 +30,7 @@ public class MessageUtils {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(msg);
         builder.setTitle("Atenção!");
-        builder.setPositiveButton("Sim",new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 ContratoService contratoService = new ContratoService();

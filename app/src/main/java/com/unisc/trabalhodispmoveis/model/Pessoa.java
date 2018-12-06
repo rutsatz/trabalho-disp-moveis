@@ -76,10 +76,6 @@ public class Pessoa implements Serializable {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
     public void setDataNascimento(String dataNascimento) {
         SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.DATE_FORMAT);
         Date d = null;
@@ -91,9 +87,17 @@ public class Pessoa implements Serializable {
         this.dataNascimento = d;
     }
 
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getDataNascimentoAsString() {
-        SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.DATE_FORMAT);
-        return sdf.format(dataNascimento);
+        if (dataNascimento != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.DATE_FORMAT);
+            return sdf.format(dataNascimento);
+        } else {
+            return "";
+        }
     }
 
     public String getTelefone() {

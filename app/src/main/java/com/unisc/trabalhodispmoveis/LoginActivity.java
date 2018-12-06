@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static int userId;
     private static String email;
+    private static String senha;
     Context context;
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -64,8 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickLogin(View view) {
 
-        String email = String.valueOf(mEmailView.getText());
-        String senha = String.valueOf(mPasswordView.getText());
+        email = String.valueOf(mEmailView.getText());
+        senha = String.valueOf(mPasswordView.getText());
 
         Log.d("teste", "email: " + email);
         Log.d("teste", "senha: " + senha);
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // Se achou prestador, monta objeto.
                         try {
-                            Usuario u = buildUsuario(userId, serverResp, TipoPessoa.PRESTADOR);
+                            Usuario u = buildUsuario(userId, email, serverResp, TipoPessoa.PRESTADOR);
                             navigateMain(u);
                         } catch (JSONException e) {
                             MessageUtils.showAlert(context, "Erro ao processar dados do server!");
@@ -146,12 +147,9 @@ public class LoginActivity extends AppCompatActivity {
         final JsonHttpResponseHandler handlerListaCliente = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                Log.d("teste", "---------------- this is response : " + response);
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
-                    Log.d("teste", "###### handlerListaCliente #######");
-                    Log.d("teste", "serverResp: " + serverResp);
+                    Log.d("teste", "handlerListaCliente serverResp: " + serverResp);
                     boolean hasError = !serverResp.getBoolean("success");
                     Log.d("teste", "hasError: " + hasError);
 
@@ -160,16 +158,20 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     } else {
                         try {
-                            Usuario u = buildUsuario(userId, serverResp, TipoPessoa.CLIENTE);
+                            Usuario u = buildUsuario(userId, email, serverResp, TipoPessoa.CLIENTE);
                             navigateMain(u);
                         } catch (JSONException e) {
-                            MessageUtils.showAlert(context, "Erro ao processar dados do servidor.");
+//                            MessageUtils.showAlert(context, "Erro ao processar dados do servidor.");
+                            // Se nao encontrou cliente, busca o prestador.
+                            Log.i("teste", "Cliente nao encontrado. Buscando prestador.");
+                            listaPrestador(userId, handlerListaPrestador);
                         }
                     }
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // Se nao encontrou cliente, busca o prestador.
+                    Log.i("teste", "Cliente nao encontrado. Buscando prestador.");
+                    listaPrestador(userId, handlerListaPrestador);
                 }
             }
 
@@ -208,11 +210,9 @@ public class LoginActivity extends AppCompatActivity {
         JsonHttpResponseHandler handlerLogin = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                Log.d("teste", "---------------- this is response : " + response);
                 try {
                     JSONObject serverResp = new JSONObject(response.toString());
-                    Log.d("teste", "serverResp: " + serverResp);
+                    Log.d("teste", "handlerLogin serverResp: " + serverResp);
                     boolean hasError = !serverResp.getBoolean("success");
                     Log.d("teste", "hasError: " + hasError);
                     if (hasError) {
@@ -224,13 +224,9 @@ public class LoginActivity extends AppCompatActivity {
                         LoginActivity.email = serverResp.getString("email");
 
                         listaCliente(userId, handlerListaCliente);
-
-//                      @@ Testes
-                       //listaPrestador(userId, handlerListaPrestador);
                     }
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    MessageUtils.showAlert(context, "Erro ao fazer login. Erro ao processar retorno do server.");
                 }
             }
 
@@ -269,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
         loginService.doLogin(email, senha, handlerLogin);
     }
 
-    private Usuario buildUsuario(int userId, JSONObject serverResp, TipoPessoa tipoPessoa) throws JSONException {
+    private Usuario buildUsuario(int userId, String email, JSONObject serverResp, TipoPessoa tipoPessoa) throws JSONException {
 
         Usuario usuario = new Usuario();
 
@@ -294,6 +290,7 @@ public class LoginActivity extends AppCompatActivity {
 
             pessoa.setUserId(jsonObject.getInt("id_login"));
             pessoa.setNome(jsonObject.getString("nome"));
+            pessoa.setEmail(email);
             pessoa.setDataNascimento(jsonObject.getString("dt_nasc"));
             pessoa.setTelefone(jsonObject.getString("telefone"));
 
@@ -303,9 +300,13 @@ public class LoginActivity extends AppCompatActivity {
         usuario.setPessoas(pessoas);
         usuario.setTipoPessoa(tipoPessoa);
 
-        Pessoa pessoaUsuario = new Pessoa();
-        pessoaUsuario.setUserId(userId);
-        usuario.setUsuarioPessoa(pessoaUsuario);
+//        Pessoa pessoaUsuario = new Pessoa();
+//        pessoaUsuario.setUserId(userId);
+//        pessoaUsuario.setEmail(email);
+//        usuario.setUsuarioPessoa(pessoaUsuario);
+
+
+        usuario.setUsuarioPessoa(pessoas.get(0));
 
         return usuario;
     }
@@ -323,8 +324,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateMain(Usuario usuario) {
         Intent intent = new Intent(context, MainActivity.class);
-
-        Log.d("teste", "navigateMain usuario " + usuario);
 
         intent.putExtra("usuario", usuario);
         intent.putExtra("primeiroLogin", false);
