@@ -2,6 +2,7 @@ package com.unisc.trabalhodispmoveis;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.unisc.trabalhodispmoveis.model.TipoPessoa;
 import com.unisc.trabalhodispmoveis.model.Usuario;
 import com.unisc.trabalhodispmoveis.service.LoginService;
 import com.unisc.trabalhodispmoveis.service.PessoaService;
+import com.unisc.trabalhodispmoveis.util.AppConstants;
 import com.unisc.trabalhodispmoveis.util.MessageUtils;
 
 import org.json.JSONArray;
@@ -40,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private JsonHttpResponseHandler handlerListaCliente;
+    private JsonHttpResponseHandler handlerListaPrestador;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
         mEmailView.setText("teste1@teste1.com");
         mPasswordView.setText("123456");
 
+        sharedPreferences = getSharedPreferences(getString(R.string.pref_key), Context.MODE_PRIVATE);
+
         // Testes
 //        String userId = "123456";
 //        Intent intent = new Intent(this, MainActivity.class);
@@ -59,30 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 //        startActivity(intent);
 //        if (1 == 1) return;
 
-        context = this;
-    }
-
-
-    public void onClickLogin(View view) {
-
-        email = String.valueOf(mEmailView.getText());
-        senha = String.valueOf(mPasswordView.getText());
-
-        Log.d("teste", "email: " + email);
-        Log.d("teste", "senha: " + senha);
-
-
-        if ("".equals(email)) {
-            MessageUtils.showAlert(context, "Preencha o campo de email.");
-            return;
-        }
-        if ("".equals(senha)) {
-            MessageUtils.showAlert(context, "Preencha o campo de senha.");
-            return;
-        }
-
         // Lista Prestador
-        final JsonHttpResponseHandler handlerListaPrestador = new JsonHttpResponseHandler() {
+        handlerListaPrestador = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If the response is JSONObject instead of expected JSONArray
@@ -144,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Lista Cliente
-        final JsonHttpResponseHandler handlerListaCliente = new JsonHttpResponseHandler() {
+        handlerListaCliente = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -206,6 +191,68 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
+        context = this;
+
+        trataAutoLogin();
+    }
+
+    private void trataAutoLogin() {
+        int loginCount = sharedPreferences.getInt(getString(R.string.pref_login_count), -1);
+        Log.i("teste", "loginCount: " + loginCount);
+        if (loginCount != -1) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            boolean autoLogin = false;
+            if (loginCount == AppConstants.AUTO_LOGIN_LIMIT) {
+                Log.i("login", "Atingiu limite de auto login");
+                editor.remove(getString(R.string.pref_login_count));
+                editor.remove(getString(R.string.pref_user_email));
+                editor.remove(getString(R.string.pref_user_id));
+                editor.apply();
+            } else {
+                Log.i("login", "efetuando auto login");
+                autoLogin = true;
+                editor.putInt(getString(R.string.pref_login_count), ++loginCount);
+                editor.apply();
+            }
+            if (autoLogin) entrarDireto();
+        }
+    }
+
+    public void entrarDireto() {
+        Log.i("login", "entrarDireto");
+        LoginActivity.email = sharedPreferences.getString(getString(R.string.pref_user_email), "");
+        userId = sharedPreferences.getInt(getString(R.string.pref_user_id), -1);
+
+        listaCliente(userId, handlerListaCliente);
+    }
+
+    public void saveFirstLoginPreferences(int userId, String email) {
+        Log.i("login", "saveFirstLoginPreferences");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(getString(R.string.pref_login_count), 1);
+        editor.putString(getString(R.string.pref_user_email), email);
+        editor.putInt(getString(R.string.pref_user_id), userId);
+        editor.apply();
+    }
+
+    public void onClickLogin(View view) {
+
+        email = String.valueOf(mEmailView.getText());
+        senha = String.valueOf(mPasswordView.getText());
+
+        Log.d("teste", "email: " + email);
+        Log.d("teste", "senha: " + senha);
+
+
+        if ("".equals(email)) {
+            MessageUtils.showAlert(context, "Preencha o campo de email.");
+            return;
+        }
+        if ("".equals(senha)) {
+            MessageUtils.showAlert(context, "Preencha o campo de senha.");
+            return;
+        }
+
         // Valida Login
         JsonHttpResponseHandler handlerLogin = new JsonHttpResponseHandler() {
             @Override
@@ -223,6 +270,7 @@ public class LoginActivity extends AppCompatActivity {
                         userId = serverResp.getInt("id_login");
                         LoginActivity.email = serverResp.getString("email");
 
+                        saveFirstLoginPreferences(userId, LoginActivity.email);
                         listaCliente(userId, handlerListaCliente);
                     }
                 } catch (JSONException e) {
