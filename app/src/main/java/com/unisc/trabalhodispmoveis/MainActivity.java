@@ -23,7 +23,7 @@ public class MainActivity extends TabActivity {
     public static void showTabs() {
 
         if (usuario != null) {
-            Log.d("pessoa", "showTabs tipoPessoa " + usuario.getTipoPessoa().toString());
+            //Log.d("pessoa", "showTabs tipoPessoa " + usuario.getTipoPessoa().toString());
 
             // Para prestador, exibe os Clientes.
             if (usuario.getTipoPessoa() == TipoPessoa.PRESTADOR) {

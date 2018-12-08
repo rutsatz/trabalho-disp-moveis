@@ -58,11 +58,11 @@ public class MeuPerfilActivity extends Activity {
         radioPrestador = (RadioButton) findViewById(R.id.radioPrestador);
         radioTipoCliente = (RadioGroup) findViewById(R.id.radioTipoCliente);
 
-        userIDtv = findViewById(R.id.userIdperfil);
+
 
         userId = MainActivity.userId;
 
-        userIDtv.setText(Integer.toString(userId));
+
         usuario = MainActivity.usuario;
 
         if (usuario != null) {

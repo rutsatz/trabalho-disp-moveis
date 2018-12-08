@@ -172,7 +172,7 @@ public class MeusContatosActivity extends Activity {
 
                             for (int x = 0; x < Integer.valueOf(serverResp.getString("total")); x++) {
                                 int id_prestador = 0;
-                                id_prestador = Integer.valueOf(prestador.getJSONObject(x).getString("id_prestador"));
+                                id_prestador = Integer.valueOf(prestador.getJSONObject(x).getString("id_login"));
 
 
                                 if (id_prestador == listaID.get(i)) {
