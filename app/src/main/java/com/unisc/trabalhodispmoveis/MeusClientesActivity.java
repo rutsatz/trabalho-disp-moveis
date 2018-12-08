@@ -160,7 +160,7 @@ public class MeusClientesActivity extends Activity {
 
                         for (int i = 0; i < listaID.size(); i++) {
                             for (int x = 0; x < Integer.valueOf(serverResp.getString("total")); x++) {
-                                int id_cliente = Integer.valueOf(serverResp.getJSONArray("cliente").getJSONObject(x).getString("id_cliente"));
+                                int id_cliente = Integer.valueOf(serverResp.getJSONArray("cliente").getJSONObject(x).getString("id_login"));
 
                                 if (id_cliente == listaID.get(i)) {
 

@@ -49,7 +49,7 @@ public class ServicosTab extends Activity {
                     for (int x = 0; x < Integer.valueOf(serverResp.getString("total")); x++) {
 
                         Map<String, Object> mapa = new HashMap<>();
-                        mapa.put("id_prestador", Integer.valueOf(serverResp.getJSONArray("prestador").getJSONObject(x).getString("id_prestador")));
+                        mapa.put("id_prestador", Integer.valueOf(serverResp.getJSONArray("prestador").getJSONObject(x).getString("id_login")));
                         mapa.put("nome", serverResp.getJSONArray("prestador").getJSONObject(x).getString("nome"));
                         mapa.put("dt_nasc", serverResp.getJSONArray("prestador").getJSONObject(x).getString("dt_nasc"));
                         mapa.put("telefone", serverResp.getJSONArray("prestador").getJSONObject(x).getString("telefone"));
